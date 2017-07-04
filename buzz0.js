@@ -348,7 +348,89 @@ var Kasuri = function (arg) {
 	};
 
 	var enemy = function (base) {
+		var th = obj(base);
+		th.md = base.md || 99;
+		th.ty = base.ty || 0;
+		th.pt = base.pt || 0;
+		th.life = base.life || 0;
+		th.txt = base.txt || null;
+		th.btheta = base.btheta || Math.PI/2;
+		th.bdtheta = 0;
+		th.fptn = [];
+		th.cycle = base.cycle || 1000;
+		th.tick = function () {
+			if (ene_mv[th.pt][th.age] !== null) {
+				if (ene_mv[th.pt][th.age][0] !== -1) th.v = ene_mv[th.pt][th.age][0];
+				if (ene_mv[th.pt][th.age][1] !== -1) th.dv = ene_mv[th.pt][th.age][1];
+				if (ene_mv[th.pt][th.age][2] !== -99) th.theta = ene_mv[th.pt][th.age][2];
+				if (ene_mv[th.pt][th.age][3] !== -99) th.dtheta = ene_mv[th.pt][th.age][3];
+				if (ene_mv[th.pt][th.age][4] !== -99) th.btheta = ene_mv[th.pt][th.age][4];
+				if (ene_mv[th.pt][th.age][5] !== -99) th.bdtheta = ene_mv[th.pt][th.age][5];
+				if (ene_mv[th.pt][th.age][6] !== -1) th.fptn[th.fptn.length] = [ene_mv[th.pt][th.age][6],0];
+			}
+			if (th.bdtheta === -98) {
+				var tt = Math.atan2(p.y-th.y, p.x-th.x);
+				if (tt < 0) tt += Math.PI*2;
+				var quo1 = th.btheta - (th.btheta % (Math.PI/16));
+			var quo2 = tt - (tt % (Math.PI/16));
+				if (tt > th.btheta && quo2 > quo1) {
+					th.btheta = quo2;
+				} else if (tt < th.btheta && quo2 < quo1) {
+					th.btheta = quo2;
+				}
+			} else {
+				th.btheta += th.bdtheta;
+			}
+			th.v += th.dv;
+			th.theta += th.dtheta;
+			th.x += th.v * Math.cos(th.theta);
+			th.y += th.v * Math.sin(th.theta);
+			if (th.pt !== 99) {
+				if (th.x <= th.size/2) th.x = th.size/2;
+				if (th.y <= th.size/2) th.y = th.size/2;
+				if (th.x > w - th.size/2) th.x = w - th.size/2;
+				if (th.y > h - th.size/2) th.y = h - th.size/2;
+			}
+			for (var i = 0; i < th.fptn.length;) {
+				if (th.fptn.length === 0) break;
+				var tmp = fire_ptn[th.fptn[i][0]][th.fptn[i][1]];
+				if (tmp !== null) th.gen_bul[tmp]();
+				th.fptn[i][1]++;
+				if (th.fptn[i][1] >= fire_ptn[th.fptn[i][0]]['lf']) {
+					th.fptn.splice(i, 1);
+				} else {
+					i++;
+				}
+			}
+			th.age++;
+			if (th.age >= th.cycle) th.age = 0;
+			return th.age;
+		};
+
+		th.gen_bul = {
+
+
+
+		};
+
+		var ene_spec = {
+
+
+		};
+
+		var ene_schedule = {
+
+
+		};
+
+
+		var ene_mv = {
+
+		};
+
+		var fire_ptn = {
+
+		};
 		
-	};
 
 };
