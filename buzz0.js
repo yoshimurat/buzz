@@ -408,7 +408,7 @@ var Kasuri = function (arg) {
 		};
 
 		th.gen_bul = {
-
+			//@todo
 
 
 		};
