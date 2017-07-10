@@ -17,7 +17,7 @@ var Kasuri = function (arg) {
 	var p = null;
 	var state = score = loaded = g_mode = in_l = in_r = in_u = in_d = in_f = kas = 0;
 	var bgcol = ['#ff00ff','#00ffff','#ffff00'];
-	var sp_name = ["sp1"];
+	var sp_name = ["sp0"];
 	var sp = [];
 	var D = 16;
 	var level = 1;
