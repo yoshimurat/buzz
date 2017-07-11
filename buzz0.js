@@ -15,9 +15,18 @@ var Buzz = function (arg) {
 	var blt_e = [];
 	var cnt_bg1 = 30;
 	var p = null;
-	var state = score = loaded = g_mode = in_l = in_r = in_u = in_d = in_f = kas = 0;
+	var state = 0;
+	var score = 0;
+	var loaded = 0;
+	var g_mode = 0;
+	var in_l = 0;
+	var in_r = 0;
+	var in_u = 0;
+	var in_d = 0;
+	var in_f = 0;
+	var kas = 0;
 	var bgcol = ['#ff00ff','#00ffff','#ffff00'];
-	var sp_name = ["sp0"];
+	var sp_name = ['sp0'];
 	var sp = [];
 	var D = 16;
 	var level = 1;
@@ -142,29 +151,33 @@ var Buzz = function (arg) {
 		ene = [];
 		bg = [];
 		frag = [];
-		blt_p = [];
 		blt_e = [];
 		score = 0;
 		kas = 0;
 		level = 0;
 		p = player({x: (w - 2) / 2, y: h - 16, v: 0});
 		if (loaded === 0) {
+			console.log(1);
 			arg.document.getElementById("c1").style.visibility = 'hidden';
-			for (var i = 0; sp_name.length; i++) {
+			console.log(1.1);
+			for (var i = 0; i < sp_name.length; i++) {
 				sp[i] = new Image();
 				sp[i].src = sp_name[i]+".png";
 			}
+			console.log(1.2);
 			ctx[1].font = "12px Bodoni MT Black";
-			arg.addEventListener("keydown", world.kd);
-			arg.addEventListener("keyup", world.ku);
-			arg.setInterval(world.tick, 21);
+			//arg.addEventListener("keydown", buz.kd);
+			//arg.addEventListener("keyup", buz.ku);
+			//arg.setInterval(buz.tick, 21);
 			loaded = 1;
 		}
+		console.log(2);
 		for (var i = 0; i < cnt_bg1; i++) bg[i] = bg1({y:Math.random() * h});
+		console.log(3);
 		draw();
 	};
 
-	var tick = function () {
+	this.tick = function () {
 		p.tick();
 		if (state === 3) return;
 		var pd = p.checkifdead();
@@ -179,7 +192,7 @@ var Buzz = function (arg) {
 		}
 													  
 		
-		if (ene_schedule[t] !== null) {
+		if (ene_schedule[t] != null) {
 			if (ene_schedule[t][0] === g_mode || ene_schedule[t][0] === -1) {
 				if (ene_schedule[t][1] === -1 || ene_schedule[t][1] === level) {
 					ene[ene.length] = enemy({
@@ -213,7 +226,7 @@ var Buzz = function (arg) {
 		check_collision();
 		p.checkifdead();
 		if (t % 10 === 1 && bg.length < cnt_bg1) {
-			bt[bt.length] = bt1({});
+			bg[bg.length] = bg1({});
 		}
 		for (var i = 0; i < bg.length;) {
 			bg[i].tick();
@@ -263,6 +276,7 @@ var Buzz = function (arg) {
 	};
 
 	var draw = function () {
+		console.log(3);
 		ctx[1].beginPath();
 		ctx[1].fillStyle = "#000000";
 		ctx[1].globalAlpha = 0.6;
@@ -294,8 +308,8 @@ var Buzz = function (arg) {
 			if (ene[i].ty === 99) {
 				if (state === 1) ctx[i].fillText("LEVEL "+level, ene[i].x, ene[i].y);
 			} else {
-				ctx[1].drawImage(sp[0], tmp * D, 0, ene[i].size, ene[i].size, ene[i].x-ene[i].size/2,ene[i].y-ene[i].size/2-2,ene[i],size,ene[i].size);
-			}
+				ctx[1].drawImage(sp[0], tmp * D, 0, ene[i].size, ene[i].size, ene[i].x-ene[i].size/2,ene[i].y-ene[i].size/2-2,ene[i].size,ene[i].size);
+			}      
 			ctx[1].restore();
 		}
 		for (var i = 0; i < blt_e.length;i++) {
@@ -315,6 +329,7 @@ var Buzz = function (arg) {
 		ctx[1].fillText(score, 65, 15);
 		ctx[1].fillText("LEVEL  " + level, w-75, 15);
 		ctx[0].putImageData(ctx[1].getImageData(0,0,w,h),0,0);
+		console.log(4);
 	};
 
 	this.kd = function (e) {
@@ -359,8 +374,8 @@ var Buzz = function (arg) {
 		th.fptn = [];
 		th.cycle = base.cycle || 1000;
 		th.tick = function () {
-			if (ene_mv[th.pt][th.age] !== null) {
-				if (ene_mv[th.pt][th.age][0] !== -1) th.v = ene_mv[th.pt][th.age][0];
+			if (ene_mv[th.pt][th.age] != null) {
+				if (ene_mv[th.pt][th.age][0] != -1) th.v = ene_mv[th.pt][th.age][0];
 				if (ene_mv[th.pt][th.age][1] !== -1) th.dv = ene_mv[th.pt][th.age][1];
 				if (ene_mv[th.pt][th.age][2] !== -99) th.theta = ene_mv[th.pt][th.age][2];
 				if (ene_mv[th.pt][th.age][3] !== -99) th.dtheta = ene_mv[th.pt][th.age][3];
@@ -394,7 +409,7 @@ var Buzz = function (arg) {
 			for (var i = 0; i < th.fptn.length;) {
 				if (th.fptn.length === 0) break;
 				var tmp = fire_ptn[th.fptn[i][0]][th.fptn[i][1]];
-				if (tmp !== null) th.gen_bul[tmp]();
+				if (tmp != null) th.gen_bul[tmp]();
 				th.fptn[i][1]++;
 				if (th.fptn[i][1] >= fire_ptn[th.fptn[i][0]]['lf']) {
 					th.fptn.splice(i, 1);
@@ -410,6 +425,7 @@ var Buzz = function (arg) {
 		th.gen_bul = {
 			'a1v2'     : function () {th.gen_bul['a1vx'](2,0);},
 			'a1v3'     : function () {th.gen_bul['a1vx'](3,0);},
+			'a1vx'     : function (av,at) {blt_e[blt_e.length] = bul({ty:7,x:th.x,y:th.y,v:av+(level-1)*0.4,theta:th.btheta+Math.PI*at,size:4});},
 			'a3v3w2'   : function () {th.gen_bul['a1vx'](3,2/16);th.gen_bul['a1vx'](3,-2/16);},
 			'arv2w180' : function () {
 				for (var a = 0;a < 1*(1+level*0.2); a++) {
@@ -439,7 +455,7 @@ var Buzz = function (arg) {
 	var ene_schedule = {
 		'1': [-1,-1,99,99,w/2-35, h/2,  0,Math.PI*2,1000,""],
 		'2': [0, -1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
-		'3': [1,  1, 0, 0,   w/2, h/2,  0,Math.PI*2,2160   ],
+		'3': [1,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
 		'0': [-1, 1, 1, 2,    25,h+20,0.5,        0,1000   ]
 	};
 	
@@ -477,7 +493,7 @@ var Buzz = function (arg) {
 			'2000'  :[2,  0.05,Math.PI*7/4,     0,          0, -98,'a1v2p1lf50'],
 			'2100'  :[3,     0,    Math.PI,-0.005,          0, -98,'a8_360v3p5lf50']
 		    },
-		    '2': {
+		'2': {
 			'0'   :[1,0,Math.PI*3/2,0,  Math.PI/2,  0,'a1v3p3lf50'],
 			'50'  :[1,0,        -99,0,        -99,-99,'a1v3p3lf50'],
 			'100' :[1,0,        -99,0,        -99,-99,'a1v3p3lf50'],
@@ -534,7 +550,7 @@ var Buzz = function (arg) {
 			'2650':[1,0,        -99,0,        -99,-99,'a1v3p3lf50'],
 			'2700':[1,0,        -99,0,        -99,-99,'a1v3p3lf50'],
 			'2750':[1,0,        -99,0,        -99,-99,'a1v3p3lf50']
-		    },
+		},
 		'99': {
 			'0'  :[ 0,  0,0,0,0,0,-1],
 			'100':[-1,0.3,0,0,0,0,-1]
@@ -544,8 +560,7 @@ var Buzz = function (arg) {
 	var fire_ptn = {
 		'none' : {
 			'lf':1
-		}
-		,
+		},
 		'a1v2p1lf50' : {
 			'lf':50,
 			'1':'a1v2','2':'a1v2','3':'a1v2','4':'a1v2','5':'a1v2','6':'a1v2','7':'a1v2','8':'a1v2','9':'a1v2','10':'a1v2',
