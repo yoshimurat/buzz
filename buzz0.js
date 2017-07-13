@@ -100,8 +100,8 @@ var Buzz = function (arg) {
 		th.tick = function () {
 			if (th.checkifdead() >= 3) return th.age;
 			th.age++;
-			if (th.checkifdead() === 0) th.lived++;
-			var tv = in_f === 0 ? 2.2 : 1.1;
+			if (th.checkifdead() == 0) th.lived++;
+			var tv = in_f == 0 ? 2.2 : 1.1;
 			th.x += (in_r - in_l) * tv;
 			th.y += (in_d - in_u) * tv;
 			if (th.x <= th.size / 2) th.x = th.size / 2;
@@ -112,9 +112,9 @@ var Buzz = function (arg) {
 		};
 		//th.move = function  (dir) {};
 		th.checkifdead = function () {
-			if (state === 2 && th.age - th.lived >= 60) return 3;
-			if (state === 1 && th.life <= 0) return 1;
-			if (state === 2 && th.age - th.lived < 60) return 2;
+			if (state == 2 && th.age - th.lived >= 60) return 3;
+			if (state == 1 && th.life <= 0) return 1;
+			if (state == 2 && th.age - th.lived < 60) return 2;
 			return 0;
 		};
 		return th;
@@ -128,11 +128,11 @@ var Buzz = function (arg) {
 		th.size = base.size || 0;
 		th.x = base.x || 0;
 		th.y = base.y || 0;
+		th.v = base.v || 0;
 		th.dv = base.dv || 0;
 		th.theta = base.theta || 0;
 		th.tick = function () {
 			th.v += th.dv;
-			th.theta += th.dvtheta;
 			th.x += th.v * Math.cos(th.theta);
 			th.y += th.v * Math.sin(th.theta);
 			th.age ++;
@@ -154,38 +154,30 @@ var Buzz = function (arg) {
 		blt_e = [];
 		score = 0;
 		kas = 0;
-		level = 0;
+		level = 1;
 		p = player({x: (w - 2) / 2, y: h - 16, v: 0});
-		if (loaded === 0) {
-			console.log(1);
+		if (loaded == 0) {
 			arg.document.getElementById("c1").style.visibility = 'hidden';
-			console.log(1.1);
 			for (var i = 0; i < sp_name.length; i++) {
 				sp[i] = new Image();
 				sp[i].src = sp_name[i]+".png";
 			}
-			console.log(1.2);
-			ctx[1].font = "12px Bodoni MT Black";
-			//arg.addEventListener("keydown", buz.kd);
-			//arg.addEventListener("keyup", buz.ku);
-			//arg.setInterval(buz.tick, 21);
+			ctx[1].font = "12px Consolas";
 			loaded = 1;
 		}
-		console.log(2);
 		for (var i = 0; i < cnt_bg1; i++) bg[i] = bg1({y:Math.random() * h});
-		console.log(3);
 		draw();
 	};
 
 	this.tick = function () {
 		p.tick();
-		if (state === 3) return;
+		if (state == 3) return;
 		var pd = p.checkifdead();
-		if (pd === 1) {
+		if (pd == 1) {
 			p.lived = p.age;
 			state = 2;
 		}
-		if (state !== 3 && pd ===3) {
+		if (state != 3 && pd ==3) {
 			state = 3;
 			draw();
 			return;
@@ -193,8 +185,8 @@ var Buzz = function (arg) {
 													  
 		
 		if (ene_schedule[t] != null) {
-			if (ene_schedule[t][0] === g_mode || ene_schedule[t][0] === -1) {
-				if (ene_schedule[t][1] === -1 || ene_schedule[t][1] === level) {
+			if (ene_schedule[t][0] == g_mode || ene_schedule[t][0] == -1) {
+				if (ene_schedule[t][1] == -1 || ene_schedule[t][1] == level) {
 					ene[ene.length] = enemy({
 						md: ene_schedule[t][0],
 						lv: ene_schedule[t][1],
@@ -206,7 +198,7 @@ var Buzz = function (arg) {
 						theta: ene_schedule[t][7],
 						cycle: ene_schedule[t][8],
 						txt: ene_schedule[t][9],
-						life: ene_spec[ene_schedule[t][2]][0]
+						life: ene_spec[ene_schedule[t][3]][0]
 					});
 				}
 			}
@@ -225,7 +217,7 @@ var Buzz = function (arg) {
 
 		check_collision();
 		p.checkifdead();
-		if (t % 10 === 1 && bg.length < cnt_bg1) {
+		if (t % 10 == 1 && bg.length < cnt_bg1) {
 			bg[bg.length] = bg1({});
 		}
 		for (var i = 0; i < bg.length;) {
@@ -262,13 +254,13 @@ var Buzz = function (arg) {
 				if (p.life-- <= 0) break;
 			}
 		}
-		if (t+1 >= t_cycle - 65 && level == 3 && g_mode === 1) p.life = 0;
-		if (state === 1 && p.life <= 0) {
+		if (t+1 >= t_cycle - 65 && level == 3 && g_mode == 1) p.life = 0;
+		if (state == 1 && p.life <= 0) {
 			for (var i = 0; i < 100; i++) {
 				frag[frag.length] = bg2({x: p.x, y: p.y, v: 3, life: 61});
 			}
 		}
-		if (state === 1 && buzzed > 0) {
+		if (state == 1 && buzzed > 0) {
 			frag[frag.length] = bg2({x: p.x, y: p.y, v: 4, life: 15});
 			score += buzzed;
 			kas += tkas;
@@ -276,17 +268,16 @@ var Buzz = function (arg) {
 	};
 
 	var draw = function () {
-		console.log(3);
 		ctx[1].beginPath();
 		ctx[1].fillStyle = "#000000";
 		ctx[1].globalAlpha = 0.6;
 		ctx[1].fillRect(0, 0, w, h);
-		if (state === 1) {
+		if (state == 1) {
 			ctx[1].save();
-			ctx[1].translate(p.x, p.y-2);
+			ctx[1].translate(p.x, p.y);
 			ctx[1].rotate(p.theta);
-			ctx[1].translate(-p,x, -p.y-2);
-			ctx[1].drawImage(sp[0],3*D,0,p.size,p.size,p.x-p.size/2,p.y-p.size/2-2,p.size,p.size);
+			ctx[1].translate(-p.x, -p.y);
+			ctx[1].drawImage(sp[0],0,0,p.size,p.size,p.x-p.size/2,p.y-p.size/2,p.size,p.size);
 			ctx[1].restore();
 		}
 		for (var i = 0; i < bg.length;i++) {
@@ -305,31 +296,31 @@ var Buzz = function (arg) {
 			ctx[1].rotate(ene[i].btheta);
 			ctx[1].translate(-ene[i].x, -ene[i].y);
 			var tmp = ene[i].age < -5 ? 5 : ene[i].age < 0 ? 6 : ene[i].ty;
-			if (ene[i].ty === 99) {
-				if (state === 1) ctx[i].fillText("LEVEL "+level, ene[i].x, ene[i].y);
+			if (ene[i].ty == 99) {
+				if (state == 1) ctx[1].fillText("LEVEL "+level, ene[i].x, ene[i].y);
 			} else {
-				ctx[1].drawImage(sp[0], tmp * D, 0, ene[i].size, ene[i].size, ene[i].x-ene[i].size/2,ene[i].y-ene[i].size/2-2,ene[i].size,ene[i].size);
+				ctx[1].drawImage(sp[0], tmp * D, 0, ene[i].size, ene[i].size, ene[i].x-ene[i].size/2,ene[i].y-ene[i].size/2,ene[i].size,ene[i].size);
 			}      
 			ctx[1].restore();
 		}
+
+		ctx[1].fillStyle = "#ffffff";
 		for (var i = 0; i < blt_e.length;i++) {
-			ctx[1].fillStyle = "#ffffff";
 			ctx[1].fillRect(blt_e[i].x - blt_e[i].size/2, blt_e[i].y - blt_e[i].size/2, blt_e[i].size, blt_e[i].size);
 		}
 
-		if (state === 3) {
-			ctx[1].fillText("GAME OVER",130, h/2);
-			ctx[1].fillText("hit 1 or 2 key", 120, h/2+25);
-		} else if (state === 0) {
-			ctx[1].fillText("1 key to start GAME A", 85, 130);
-			ctx[1].fillText("2 key to start GAME B", 85, 150);
+		if (state == 3) {
+			ctx[1].fillText("GAME OVER",145, h/2);
+			ctx[1].fillText("hit '1' or '2' key", 140, h/2+25);
+		} else if (state == 0) {
+			ctx[1].fillText("hit '1' key to start GAME A", 100, 230);
+			ctx[1].fillText("hit '2' key to start GAME B", 100, 250);
 		}
 
 		ctx[1].fillText("SCORE", 5,15);
-		ctx[1].fillText(score, 65, 15);
+		ctx[1].fillText(t, 65, 15);
 		ctx[1].fillText("LEVEL  " + level, w-75, 15);
 		ctx[0].putImageData(ctx[1].getImageData(0,0,w,h),0,0);
-		console.log(4);
 	};
 
 	this.kd = function (e) {
@@ -341,22 +332,22 @@ var Buzz = function (arg) {
 	};
 
 	var mv = function (cd,val) {
-		if (cd === 37) {
+		if (cd == 37) {
 			in_l = val;
-		} else if (cd === 38) {
+		} else if (cd == 38) {
 			in_u = val;
-		} else if (cd === 39) {
+		} else if (cd == 39) {
 			in_r = val;
-		} else if (cd === 40) {
+		} else if (cd == 40) {
 			in_d = val;
-		} else if (cd === 49 || cd === 50) {
+		} else if (cd == 49 || cd == 50) {
 			in_f = val;
-			if (state === 0 && val === 1) {
-				g_mode = cd === 49 ? 0 : 1;
+			if (state == 0 && val == 1) {
+				g_mode = cd == 49 ? 0 : 1;
 				state = 1;
 				t = 0;
 				init0();
-			} else if (state === 3 && val === 1) {
+			} else if (state == 3 && val == 1) {
 				state = 0;
 			}
 		}
@@ -381,9 +372,10 @@ var Buzz = function (arg) {
 				if (ene_mv[th.pt][th.age][3] !== -99) th.dtheta = ene_mv[th.pt][th.age][3];
 				if (ene_mv[th.pt][th.age][4] !== -99) th.btheta = ene_mv[th.pt][th.age][4];
 				if (ene_mv[th.pt][th.age][5] !== -99) th.bdtheta = ene_mv[th.pt][th.age][5];
-				if (ene_mv[th.pt][th.age][6] !== -1) th.fptn[th.fptn.length] = [ene_mv[th.pt][th.age][6],0];
+				if (ene_mv[th.pt][th.age][6] != -1) th.fptn[th.fptn.length] = [ene_mv[th.pt][th.age][6],0];
+				console.log(th.fptn.length + " " + ene_mv[th.pt][th.age][6]);
 			}
-			if (th.bdtheta === -98) {
+			if (th.bdtheta == -98) {
 				var tt = Math.atan2(p.y-th.y, p.x-th.x);
 				if (tt < 0) tt += Math.PI*2;
 				var quo1 = th.btheta - (th.btheta % (Math.PI/16));
@@ -400,14 +392,14 @@ var Buzz = function (arg) {
 			th.theta += th.dtheta;
 			th.x += th.v * Math.cos(th.theta);
 			th.y += th.v * Math.sin(th.theta);
-			if (th.pt !== 99) {
+			if (th.pt != 99) {
 				if (th.x <= th.size/2) th.x = th.size/2;
 				if (th.y <= th.size/2) th.y = th.size/2;
 				if (th.x > w - th.size/2) th.x = w - th.size/2;
 				if (th.y > h - th.size/2) th.y = h - th.size/2;
 			}
 			for (var i = 0; i < th.fptn.length;) {
-				if (th.fptn.length === 0) break;
+				if (th.fptn.length == 0) break;
 				var tmp = fire_ptn[th.fptn[i][0]][th.fptn[i][1]];
 				if (tmp != null) th.gen_bul[tmp]();
 				th.fptn[i][1]++;
@@ -428,7 +420,7 @@ var Buzz = function (arg) {
 			'a1vx'     : function (av,at) {blt_e[blt_e.length] = bul({ty:7,x:th.x,y:th.y,v:av+(level-1)*0.4,theta:th.btheta+Math.PI*at,size:4});},
 			'a3v3w2'   : function () {th.gen_bul['a1vx'](3,2/16);th.gen_bul['a1vx'](3,-2/16);},
 			'arv2w180' : function () {
-				for (var a = 0;a < 1*(1+level*0.2); a++) {
+				for (var a = 0;a < 0.5*(1+level*0.2); a++) {
 					blt_e[blt_e.length] = bul({ty:7, x:th.x, y:th.y, v:0.6+Math.random()*(1+(level-1)*0.3),theta: th.btheta-Math.PI/4 + Math.random()*Math.PI/2, size:4});
 				}
 			},
@@ -454,9 +446,9 @@ var Buzz = function (arg) {
 	
 	var ene_schedule = {
 		'1': [-1,-1,99,99,w/2-35, h/2,  0,Math.PI*2,1000,""],
-		'2': [0, -1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
+		'2': [0,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
 		'3': [1,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
-		'0': [-1, 1, 1, 2,    25,h+20,0.5,        0,1000   ]
+		'0': [-1, 1, 1, 2,    25,h+20,0.5,        0,2800   ]
 	};
 	
 	
@@ -483,7 +475,7 @@ var Buzz = function (arg) {
 			'950'   :[0.5,   0,  Math.PI/4,  0.01,        -99, -98,'a8_360v3p5lf50'],
 			'1200'  :[1, 0.002,          0,  0.01,          0, 0.1,'a8_360v3p5lf50'],
 			'1250'  :[0,     0,        -99,  0.01,        -99, 0.1,'a8_360v3p5lf50'],
-			'1300'  :[0,     0,        -99,  0.01,        -99, 0,1,'a8_360v3p5lf50'],
+			'1300'  :[0,     0,        -99,  0.01,        -99, 0.1,'a8_360v3p5lf50'],
 			'1400'  :[3, -0.02,Math.PI*7/4, -0.01,          0, -98,'a8_360v3p5lf50'],
 			'1650'  :[2, -0.02,Math.PI*3/4,     0,Math.PI*3/4,-0.1,'a1v2p1lf50'],
 			'1700'  :[2, -0.02,        -99,     0,        -99,-0.1,'a1v2p1lf50'],
