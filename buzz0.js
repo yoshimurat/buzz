@@ -183,22 +183,20 @@ var Buzz = function (arg) {
 													  
 		
 		if (ene_schedule[t] != null) {
-			if (ene_schedule[t][0] == -1) {
-				if (ene_schedule[t][1] == -1 || ene_schedule[t][1] == level) {
-					ene[ene.length] = enemy({
-						md: ene_schedule[t][0],
-						lv: ene_schedule[t][1],
-						ty: ene_schedule[t][2],
-						pt: ene_schedule[t][3],
-						x:  ene_schedule[t][4],
-						y:  ene_schedule[t][5],
-						v:  ene_schedule[t][6],
-						theta: ene_schedule[t][7],
-						cycle: ene_schedule[t][8],
-						txt: ene_schedule[t][9],
-						life: ene_spec[ene_schedule[t][3]][0]
-					});
-				}
+			if (ene_schedule[t][1] == -1 || ene_schedule[t][1] == level) {
+				ene[ene.length] = enemy({
+					md: ene_schedule[t][0],
+					lv: ene_schedule[t][1],
+					ty: ene_schedule[t][2],
+					pt: ene_schedule[t][3],
+					x:  ene_schedule[t][4],
+					y:  ene_schedule[t][5],
+					v:  ene_schedule[t][6],
+					theta: ene_schedule[t][7],
+					cycle: ene_schedule[t][8],
+					txt: ene_schedule[t][9],
+					life: ene_spec[ene_schedule[t][3]][0]
+				});
 			}
 		}
 
