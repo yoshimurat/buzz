@@ -18,7 +18,6 @@ var Buzz = function (arg) {
 	var state = 0;
 	var score = 0;
 	var loaded = 0;
-	var g_mode = 0;
 	var in_l = 0;
 	var in_r = 0;
 	var in_u = 0;
@@ -143,7 +142,6 @@ var Buzz = function (arg) {
 
 	this.init = function () {
 		state = 0;
-		g_mode = 0;
 		init0();
 	};
 
@@ -185,7 +183,7 @@ var Buzz = function (arg) {
 													  
 		
 		if (ene_schedule[t] != null) {
-			if (ene_schedule[t][0] == g_mode || ene_schedule[t][0] == -1) {
+			if (ene_schedule[t][0] == -1) {
 				if (ene_schedule[t][1] == -1 || ene_schedule[t][1] == level) {
 					ene[ene.length] = enemy({
 						md: ene_schedule[t][0],
@@ -254,7 +252,6 @@ var Buzz = function (arg) {
 				if (p.life-- <= 0) break;
 			}
 		}
-		if (t+1 >= t_cycle - 65 && level == 3 && g_mode == 1) p.life = 0;
 		if (state == 1 && p.life <= 0) {
 			for (var i = 0; i < 100; i++) {
 				frag[frag.length] = bg2({x: p.x, y: p.y, v: 3, life: 61});
@@ -311,10 +308,9 @@ var Buzz = function (arg) {
 
 		if (state == 3) {
 			ctx[1].fillText("GAME OVER",145, h/2);
-			ctx[1].fillText("hit '1' or '2' key", 140, h/2+25);
+			ctx[1].fillText("hit '1' key to start new game", 100, h/2+25);
 		} else if (state == 0) {
-			ctx[1].fillText("hit '1' key to start GAME A", 100, 230);
-			ctx[1].fillText("hit '2' key to start GAME B", 100, 250);
+			ctx[1].fillText("hit '1' key to start new game", 100, 230);
 		}
 
 		ctx[1].fillText("SCORE", 5,15);
@@ -340,10 +336,9 @@ var Buzz = function (arg) {
 			in_r = val;
 		} else if (cd == 40) {
 			in_d = val;
-		} else if (cd == 49 || cd == 50) {
+		} else if (cd == 49) {
 			in_f = val;
 			if (state == 0 && val == 1) {
-				g_mode = cd == 49 ? 0 : 1;
 				state = 1;
 				t = 0;
 				init0();
@@ -447,7 +442,7 @@ var Buzz = function (arg) {
 	var ene_schedule = {
 		'1': [-1,-1,99,99,w/2-35, h/2,  0,Math.PI*2,1000,""],
 		'2': [0,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
-		'3': [1,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
+//		'3': [1,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
 		'0': [-1, 1, 1, 2,    25,h+20,0.5,        0,2800   ]
 	};
 	
