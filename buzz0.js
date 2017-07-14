@@ -318,7 +318,7 @@ var Buzz = function (arg) {
 		}
 
 		ctx[1].fillText("SCORE", 5,15);
-		ctx[1].fillText(t, 65, 15);
+		ctx[1].fillText(score, 65, 15);
 		ctx[1].fillText("LEVEL  " + level, w-75, 15);
 		ctx[0].putImageData(ctx[1].getImageData(0,0,w,h),0,0);
 	};
@@ -420,8 +420,8 @@ var Buzz = function (arg) {
 			'a1vx'     : function (av,at) {blt_e[blt_e.length] = bul({ty:7,x:th.x,y:th.y,v:av+(level-1)*0.4,theta:th.btheta+Math.PI*at,size:4});},
 			'a3v3w2'   : function () {th.gen_bul['a1vx'](3,2/16);th.gen_bul['a1vx'](3,-2/16);},
 			'arv2w180' : function () {
-				for (var a = 0;a < 0.5*(1+level*0.2); a++) {
-					blt_e[blt_e.length] = bul({ty:7, x:th.x, y:th.y, v:0.6+Math.random()*(1+(level-1)*0.3),theta: th.btheta-Math.PI/4 + Math.random()*Math.PI/2, size:4});
+				for (var a = 0;a < 1*(1+level*0.2); a++) {
+					blt_e[blt_e.length] = bul({ty:7, x:th.x, y:th.y, v:0.6+Math.random()*(1+(level-1)*0.3),theta: th.btheta-Math.PI/2 + Math.random()*Math.PI, size:4});
 				}
 			},
 			'axvxw360' : function (an,av) {
