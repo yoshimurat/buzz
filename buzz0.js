@@ -54,7 +54,6 @@ var Buzz = function (arg) {
 	var bg1 = function (base) {
 		var th = obj(base);
 		th.x = Math.random() * w;
-		th.y = base.y || 0;
 		th.v = Math.random() + 0.5;
 		th.size = 2;
 		th.tick = function () {
@@ -62,19 +61,11 @@ var Buzz = function (arg) {
 			th.y += th.v;
 			return th.age;
 		};
-		th.isout = function () {
-			return th.x < off_x_min
-				|| th.x > off_x_max
-				|| th.y < off_y_min
-				|| th.y > off_y_max;
-		};
 		return th;
 	};
 
 	var bg2 = function (base) {
 		var th = obj(base);
-		th.x = base.x || 0;
-		th.y = base.y || 0;
 		th.v = Math.random() * base.v;
 		th.theta = Math.random() * Math.PI * 2 - Math.PI;
 		th.size = 2;
@@ -109,7 +100,6 @@ var Buzz = function (arg) {
 			if (th.y > h - th.size / 2) th.y = h - th.size / 2;
 			return th.age;
 		};
-		//th.move = function  (dir) {};
 		th.checkifdead = function () {
 			if (state == 2 && th.age - th.lived >= 60) return 3;
 			if (state == 1 && th.life <= 0) return 1;
@@ -125,11 +115,6 @@ var Buzz = function (arg) {
 		th.ty = base.ty || 0;
 		th.py = base.py || 0;
 		th.size = base.size || 0;
-		th.x = base.x || 0;
-		th.y = base.y || 0;
-		th.v = base.v || 0;
-		th.dv = base.dv || 0;
-		th.theta = base.theta || 0;
 		th.tick = function () {
 			th.v += th.dv;
 			th.x += th.v * Math.cos(th.theta);
@@ -180,7 +165,6 @@ var Buzz = function (arg) {
 			draw();
 			return;
 		}
-													  
 		
 		if (ene_schedule[t] != null) {
 			if (ene_schedule[t][1] == -1 || ene_schedule[t][1] == level) {
@@ -411,7 +395,7 @@ var Buzz = function (arg) {
 			'a1v2'     : function () {th.gen_bul['a1vx'](2,0);},
 			'a1v3'     : function () {th.gen_bul['a1vx'](3,0);},
 			'a1vx'     : function (av,at) {blt_e[blt_e.length] = bul({ty:7,x:th.x,y:th.y,v:av+(level-1)*0.4,theta:th.btheta+Math.PI*at,size:4});},
-			'a3v3w2'   : function () {th.gen_bul['a1vx'](3,2/16);th.gen_bul['a1vx'](3,-2/16);},
+			'a3v3w3'   : function () {th.gen_bul['a1vx'](3,2/16);th.gen_bul['a1vx'](3,-2/16);th.gen_bul['a1vx'](3,0);},
 			'arv2w180' : function () {
 				for (var a = 0;a < 1*(1+level*0.2); a++) {
 					blt_e[blt_e.length] = bul({ty:7, x:th.x, y:th.y, v:0.6+Math.random()*(1+(level-1)*0.3),theta: th.btheta-Math.PI/2 + Math.random()*Math.PI, size:4});
@@ -440,7 +424,6 @@ var Buzz = function (arg) {
 	var ene_schedule = {
 		'1': [-1,-1,99,99,w/2-35, h/2,  0,Math.PI*2,1000,""],
 		'2': [0,  1, 2, 0,   w/2, -20,  3,Math.PI*2,2160   ],
-//		'3': [1,  1, 0, 0,   w/2, -20,  3,Math.PI*2,2160   ],
 		'0': [-1, 1, 1, 2,    25,h+20,0.5,        0,2800   ]
 	};
 	
@@ -556,7 +539,7 @@ var Buzz = function (arg) {
 		},
 		'a3v3p3lf20' : {
 			'lf':20,
-			'0':'a3v3w2','3':'a3v3w2','6':'a3v3w2','9':'a3v3w2','12':'a3v3w2','15':'a3v3w2','18':'a3v3w2'
+			'0':'a3v3w3','3':'a3v3w3','6':'a3v3w3','9':'a3v3w3','12':'a3v3w3','15':'a3v3w3','18':'a3v3w3'
 		},
 		'a1v1p5lf20': {
 			'lf':20,
